@@ -49,11 +49,11 @@ public class MyRepository {
         }
     }
 
-    public Map<String, Object> getTodoById(int id) throws SQLException {
+    public Map<String, Object> getTodoByTitle(String title) throws SQLException {
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM todos WHERE id = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM todos WHERE title = ?")) {
 
-            preparedStatement.setInt(1, id);
+            preparedStatement.setString(1, title);
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
                 if (resultSet.next()) {
                     Map<String, Object> todo = new HashMap<>();
@@ -65,5 +65,24 @@ public class MyRepository {
             }
         }
         return null;
+    }
+
+    public void modifyTodo(String title, LocalDate deadline) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE todos SET deadline = ? WHERE title = ?")) {
+
+            preparedStatement.setDate(1, Date.valueOf(deadline));
+            preparedStatement.setString(2, title);
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public void deleteTodo(String title) throws SQLException {
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM todos WHERE title = ?")) {
+
+            preparedStatement.setString(1, title);
+            preparedStatement.executeUpdate();
+        }
     }
 }
