@@ -47,8 +47,13 @@ public class View {
                 String titleToAdd = scanner.nextLine();
 
                 System.out.print("추가할 데드라인: ");
-                LocalDate deadline = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
-                myRepository.insertTodo(titleToAdd, deadline);
+                LocalDate deadlineToAdd = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
+
+                System.out.print("추가할 우선순위: ");
+                int priorityToAdd = scanner.nextInt();
+                scanner.nextLine();
+
+                myRepository.insertTodo(titleToAdd, deadlineToAdd, priorityToAdd);
                 break;
             case 2:
                 System.out.print("검색할 제목: ");
@@ -61,7 +66,12 @@ public class View {
 
                 System.out.print("변경할 데드라인: ");
                 LocalDate newDeadline = LocalDate.parse(scanner.nextLine(), DateTimeFormatter.ISO_LOCAL_DATE);
-                myRepository.modifyTodo(titleToModifyDeadline, newDeadline);
+
+                System.out.print("변경할 우선순위: ");
+                int newPriority = scanner.nextInt();
+                scanner.nextLine();
+
+                myRepository.modifyTodo(titleToModifyDeadline, newDeadline, newPriority);
                 break;
             case 4:
                 System.out.print("삭제할 제목: ");

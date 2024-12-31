@@ -33,18 +33,20 @@ public class MyRepository {
                 todo.put("id", resultSet.getInt("id"));
                 todo.put("title", resultSet.getString("title"));
                 todo.put("deadline", resultSet.getDate("deadline"));
+                todo.put("priority", resultSet.getInt("priority"));
                 todos.add(todo);
             }
         }
         return todos;
     }
 
-    public void insertTodo(String title, LocalDate deadline) throws SQLException {
+    public void insertTodo(String title, LocalDate deadline, int priority) throws SQLException {
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO todos (title, deadline) VALUES (?, ?)")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO todos (title, deadline, priority) VALUES (?, ?, ?)")) {
 
             preparedStatement.setString(1, title);
             preparedStatement.setDate(2, Date.valueOf(deadline));
+            preparedStatement.setInt(3, priority);
             preparedStatement.executeUpdate();
         }
     }
@@ -60,6 +62,7 @@ public class MyRepository {
                     todo.put("id", resultSet.getInt("id"));
                     todo.put("title", resultSet.getString("title"));
                     todo.put("deadline", resultSet.getDate("deadline"));
+                    todo.put("priority", resultSet.getInt("priority"));
                     return todo;
                 }
             }
@@ -67,12 +70,13 @@ public class MyRepository {
         return null;
     }
 
-    public void modifyTodo(String title, LocalDate deadline) throws SQLException {
+    public void modifyTodo(String title, LocalDate deadline, int priority) throws SQLException {
         try (Connection connection = DriverManager.getConnection(url, username, password);
-             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE todos SET deadline = ? WHERE title = ?")) {
+             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE todos SET deadline = ?, priority = ? WHERE title = ?")) {
 
             preparedStatement.setDate(1, Date.valueOf(deadline));
-            preparedStatement.setString(2, title);
+            preparedStatement.setInt(2, priority);
+            preparedStatement.setString(3, title);
             preparedStatement.executeUpdate();
         }
     }
