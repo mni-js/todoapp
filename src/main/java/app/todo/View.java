@@ -18,22 +18,19 @@ public class View {
     private Scanner scanner = new Scanner(System.in);
 
     public int choiceOption() {
-        System.out.println("옵션을 선택해주세요. [0. 전체 확인 | 1. 추가 | 2. 검색 | 3. 변경 | 4. 삭제 | 5. 종료]");
-        System.out.print("옵션: ");
-
-        int option;
-
         while (true) {
+            System.out.println("옵션을 선택해주세요. [0. 전체 확인 | 1. 추가 | 2. 검색 | 3. 변경 | 4. 삭제 | 5. 종료]");
+            System.out.print("옵션: ");
+
             try {
-                option = scanner.nextInt();
-                break;
+                int option = scanner.nextInt();
+                scanner.nextLine();
+                return option;
             } catch (Exception e) {
                 System.out.println("옵션이 잘못 입력됐습니다.");
+                scanner.next();
             }
         }
-        scanner.nextLine();
-
-        return option;
     }
 
     public void executeProgram(int option) throws SQLException {
